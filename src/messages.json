@@ -1,0 +1,27 @@
+[
+  {
+    "title": "Meeting Reminder",
+    "content": "Don't forget the team meeting at 2 PM in the main conference room.",
+    "received": "2 hours ago"
+  },
+  {
+    "title": "New Email Notification",
+    "content": "You have a new email from John Doe regarding the Q3 report.",
+    "received": "30 minutes ago"
+  },
+  {
+    "title": "Task Assignment",
+    "content": "You've been assigned the task 'Review website content' due on Friday.",
+    "received": "Yesterday"
+  },
+  {
+    "title": "Order Confirmation",
+    "content": "Your order #12345 has been shipped and will arrive in 3-5 business days.",
+    "received": "5 hours ago"
+  },
+  {
+    "title": "Weather Alert",
+    "content": "Heavy rain and thunderstorms expected this afternoon. Stay safe!",
+    "received": "1 hour ago"
+  }
+]

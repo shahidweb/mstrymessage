@@ -20,7 +20,8 @@ export async function POST(req: Request) {
       model: openai.completion("gpt-3.5-turbo-instruct"),
       prompt,
     });
-    return text;
+    // return text;
+    return NextResponse.json({ text }, { status: 200 });
   } catch (error) {
     if (error instanceof OpenAI.APIError) {
       const { name, status, headers, message } = error;

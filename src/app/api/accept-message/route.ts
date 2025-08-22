@@ -43,7 +43,7 @@ export async function GET(req: Request) {
 
   const userId = user._id;
   try {
-    const foundUser = await UserModel.findById({ userId });
+    const foundUser = await UserModel.findById(userId);
     if (!foundUser) return genericRes("User not found", 401);
     return Response.json(
       {

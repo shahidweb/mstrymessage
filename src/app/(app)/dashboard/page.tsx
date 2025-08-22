@@ -37,7 +37,7 @@ function page() {
   const fetchAcceptMessage = useCallback(async () => {
     setIsSwitchLoading(true);
     try {
-      const res = await axios.get<ApiResponse>(`/api/accept-meesage`);
+      const res = await axios.get<ApiResponse>(`/api/accept-message`);
       setValue("acceptMessage", res.data.isAcceptingMessage || false);
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
@@ -112,8 +112,6 @@ function page() {
   let username = "";
   if (session?.user) {
     username = session?.user.username;
-  } else {
-    router.replace("/");
   }
   const baseUrl = `${window.location.protocol}// ${window.location.host}`;
   const profileUrl = `${baseUrl}/u/${username}`;

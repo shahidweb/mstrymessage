@@ -22,7 +22,7 @@ export async function GET(req: Request) {
       { $group: { _id: "$_id", messages: { $push: "$messages" } } },
     ]);
 
-    if (!user || user.length == 0) return genericRes("user not found", 200);
+    if (!user || user.length == 0) return genericRes("user message is not found", 200);
     return Response.json(
       {
         success: true,

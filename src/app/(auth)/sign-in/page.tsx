@@ -28,14 +28,15 @@ function page() {
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
-      indentifier: "",
+      identifier: "",
       password: "",
     },
   });
 
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
+    console.log('onsumit', data)
     const result = await signIn("credentials", {
-      identifier: data.indentifier,
+      identifier: data.identifier,
       password: data.password,
       redirect: false,
     });
@@ -45,7 +46,7 @@ function page() {
         description: "Incorrect username or pasword",
       });
     } else if (result?.url) {
-      router.replace("/dashboard");
+      router.push("/dashboard");
     }
   };
 
@@ -63,7 +64,7 @@ function page() {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <FormField
                 control={form.control}
-                name="indentifier"
+                name="identifier"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Username/Email</FormLabel>

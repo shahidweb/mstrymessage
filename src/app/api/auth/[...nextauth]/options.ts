@@ -7,8 +7,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
-      name: "Credentials",
-      id: "Credentials",
+      name: "credentials",
+      id: "credentials",
       credentials: {
         email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
@@ -19,7 +19,7 @@ export const authOptions: NextAuthOptions = {
           const user = await UserModel.findOne({
             $or: [
               { email: credentials.identifier },
-              { username: credentials.identifier },
+              { username: credentials.identifier},
             ],
           });
           if (!user) {
@@ -35,7 +35,7 @@ export const authOptions: NextAuthOptions = {
           if (isMatchPwd) {
             return user;
           } else {
-            throw new Error("Incorrent Password");
+            throw new Error("Incorrect Password");
           }
         } catch (error: any) {
           throw new Error();

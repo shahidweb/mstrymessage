@@ -11,6 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
 import { Loader2, RefreshCcw } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -19,6 +20,7 @@ function page() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSwitchLoading, setIsSwitchLoading] = useState(false);
+  const router = useRouter();
 
   const handleDeleteMessage = (messageId: string) => {
     setMessages(messages.filter((item) => item.id !== messageId));
@@ -100,13 +102,6 @@ function page() {
     }
   };
 
-  let username = "";
-  if (session?.user) {
-    username = session?.user.username;
-  }
-  const baseUrl = `${window.location.protocol}// ${window.location.host}`;
-  const profileUrl = `${baseUrl}/u/${username}`;
-
   const copyToClipboard = () => {
     navigator.clipboard.writeText(profileUrl);
     toast("URL copies", {
@@ -114,9 +109,14 @@ function page() {
     });
   };
 
-  if (!session || !session.user) {
-    return <div>Please login</div>;
+  let username = "";
+  if (session?.user) {
+    username = session?.user.username;
+  } else {
+    router.replace("/");
   }
+  const baseUrl = `${window.location.protocol}// ${window.location.host}`;
+  const profileUrl = `${baseUrl}/u/${username}`;
 
   return (
     <div

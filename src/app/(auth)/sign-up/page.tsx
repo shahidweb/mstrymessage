@@ -71,16 +71,16 @@ function page() {
     setIsSubmitting(true);
     try {
       const res = await axios.post<ApiResponse>(`/api/sign-up`, data);
-      toast("success", {
-        description: res.data.message,
-      });
-      router.replace(`/verify/${username}`);
+      if (res.status) {
+        router.replace(`/verify/${username}`);
+        toast.success(res.data.message);
+      } else toast.error(res.data.message);
       setIsSubmitting(false);
     } catch (error) {
       console.error("Error in signup of user", error);
       const axiosError = error as AxiosError<ApiResponse>;
       let errorMessage = axiosError.response?.data.message;
-      toast("Signup Failed", { description: errorMessage });
+      toast.error("Signup Failed", { description: errorMessage });
       setIsSubmitting(false);
     }
   };
@@ -159,7 +159,11 @@ function page() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" disabled={isSubmitting}>
+              <Button
+                className="cursor-pointer"
+                type="submit"
+                disabled={isSubmitting}
+              >
                 {isSubmitting ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please
@@ -176,7 +180,7 @@ function page() {
               Already a member?{" "}
               <Link
                 href={"/sign-in"}
-                className="text-blue-600 hover:text-blue-800"
+                className="text-blue-600 hover:text-blue-800 cursor-pointer"
               >
                 Sign in
               </Link>

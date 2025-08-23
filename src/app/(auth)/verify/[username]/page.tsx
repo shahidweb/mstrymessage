@@ -15,6 +15,7 @@ import { ApiResponse } from "@/types/ApiResponse";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
 import { useParams, useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
@@ -33,9 +34,7 @@ function VerifyAccount() {
         username: params.username,
         code: data.code,
       });
-      toast("Success", {
-        description: res.data.message,
-      });
+      toast.success(res.data.message);
       router.replace("/sign-in");
     } catch (error) {
       console.error("Error in verify of user", error);
@@ -44,6 +43,28 @@ function VerifyAccount() {
       toast("Verify Failed", { description: errorMessage });
     }
   };
+
+  useEffect(() => {
+    const checkUserName = async () => {
+      if (params.username) {
+        try {
+          await axios.get(
+            `/api/check-username-unique?username=${params.username}`
+          );
+        } catch (error) {
+          const axiosError = error as AxiosError<ApiResponse>;
+          const message = axiosError.response?.data?.message || "";
+          if (message === "username is already taken") {
+            toast.success("User is already Verified", {
+              description: "Please try sign in",
+            });
+            router.replace("/sign-in");
+          }
+        }
+      }
+    };
+    checkUserName();
+  }, [params]);
 
   return (
     <>
@@ -71,7 +92,9 @@ function VerifyAccount() {
                   </FormItem>
                 )}
               />
-              <Button className="cursor-pointer" type="submit">Submit</Button>
+              <Button className="cursor-pointer" type="submit">
+                Submit
+              </Button>
             </form>
           </Form>
         </div>

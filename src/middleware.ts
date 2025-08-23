@@ -6,17 +6,20 @@ export async function middleware(request: NextRequest) {
   const url = request.nextUrl;
   // Public routes
   const publicPaths = ["/", "/sign-in", "/sign-up", "/verify"];
-  const isCorrectPath = publicPaths.some((path) => path === url.pathname);
-  // If user is not authenticated and tries to access protected routes
-  if (!token && !isCorrectPath) {
+  const isAllowedAccessPath = publicPaths.some((path) => {
+    if (path === "/verify") {
+      return /^\/verify(\/.*)?$/.test(url.pathname);
+    }
+    return path === url.pathname;
+  });
+
+  if (!token && !isAllowedAccessPath) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  // If user is authenticated and tries to access auth pages, redirect to dashboard
-  if (token && isCorrectPath) {
+  if (token && isAllowedAccessPath) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
-
   return NextResponse.next();
 }
 

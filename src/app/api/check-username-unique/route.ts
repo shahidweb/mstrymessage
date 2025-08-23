@@ -17,12 +17,15 @@ export async function GET(req: Request) {
     const result = UsernameQuerySchema?.safeParse(queryParam);
     if (!result.success) {
       const usernameError = result.error.format().username?._errors || [];
-      return Response.json({
-        success: false,
-        message: usernameError.length
-          ? usernameError.join(", ")
-          : "Invalid query parameters",
-      });
+      return Response.json(
+        {
+          success: false,
+          message: usernameError.length
+            ? usernameError.join(", ")
+            : "Invalid query parameters",
+        },
+        { status: 400 }
+      );
     }
     const { username }: any = result?.data;
     const existingVerifiedUser = await UserModel.findOne({

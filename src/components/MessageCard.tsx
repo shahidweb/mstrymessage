@@ -27,7 +27,7 @@ function MessageCard({ message, onMessageDelete }: MessageCardProps) {
     const res = await axios.delete<ApiResponse>(
       `/api/delete-message/${message._id}`
     );
-    toast(res.data.message);
+    toast.error(res.data.messages);
     onMessageDelete(message._id);
   };
 
@@ -35,9 +35,9 @@ function MessageCard({ message, onMessageDelete }: MessageCardProps) {
     <>
       <Card>
         <CardHeader>
-          <CardTitle>Card Title</CardTitle>
-          <CardDescription>Card Description</CardDescription>
-          <CardAction>Card Action</CardAction>
+          <CardTitle>{message.content}</CardTitle>
+          <CardDescription>{new Date(message.createAt).toLocaleString('en-IN')}</CardDescription>
+          <CardAction onClick={confirmHandler} className="bg-red-500 text-white px-3 pb-1 rounded-sm cursor-pointer">x</CardAction>
         </CardHeader>
         <CardContent />
       </Card>

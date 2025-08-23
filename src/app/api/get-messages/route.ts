@@ -16,13 +16,13 @@ export async function GET(req: Request) {
   const userId = new mongoose.Types.ObjectId(user._id);
   try {
     const user = await UserModel.aggregate([
-      { $match: { id: userId } },
+      { $match: { _id: userId } },
       { $unwind: "$messages" },
       { $sort: { "messsages.createdAt": -1 } },
       { $group: { _id: "$_id", messages: { $push: "$messages" } } },
     ]);
-
-    if (!user || user.length == 0) return genericRes("user message is not found", 200);
+    if (!user || user.length == 0)
+      return genericRes("Messages are not avaialble as per current user", 200);
     return Response.json(
       {
         success: true,

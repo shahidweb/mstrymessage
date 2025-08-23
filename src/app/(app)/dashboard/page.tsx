@@ -23,7 +23,7 @@ function page() {
   const router = useRouter();
 
   const handleDeleteMessage = (messageId: string) => {
-    setMessages(messages.filter((item) => item.id !== messageId));
+    setMessages(messages.filter((item) => item._id !== messageId));
   };
 
   const { data: session } = useSession();
@@ -38,7 +38,7 @@ function page() {
     setIsSwitchLoading(true);
     try {
       const res = await axios.get<ApiResponse>(`/api/accept-message`);
-      setValue("acceptMessage", res.data.isAcceptingMessage || false);
+      setValue("acceptMessage", res.data.isAcceptingMessages || false);
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
       toast("Error", {
@@ -132,7 +132,7 @@ function page() {
             disabled
             className="input input-bordered w-full p-2 mr-2"
           />
-          <Button onClick={copyToClipboard}>Copy</Button>
+          <Button className="cursor-pointer" onClick={copyToClipboard}>Copy</Button>
         </div>
       </div>
       <div className="mb-4">

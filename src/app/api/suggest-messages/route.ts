@@ -35,7 +35,7 @@ export async function POST(req: Request) {
         { status }
       );
     } else {
-      console.log("An Expected error occured", error);
+      console.error("An Expected error occured", error);
       throw error;
     }
   }

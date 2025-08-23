@@ -16,11 +16,10 @@ function pages() {
       const data = res.data && res.data.length ? res.data.split("||") : [];
       setSugestMessages(data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       const data =
         "What's a movie or book you could watch or read over and over again?||If you could instantly learn any new skill, what would it be?||What's a small, unexpected moment of kindness you've witnessed recently";
-      console.log(data.split("||"));
       setSugestMessages(data.split("||"));
     }
   };

@@ -34,13 +34,11 @@ function page() {
   });
 
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
-    console.log('onsumit', data)
     const result = await signIn("credentials", {
       identifier: data.identifier,
       password: data.password,
       redirect: false,
     });
-    console.log("result", result);
     if (result?.error) {
       toast("Login failed", {
         description: "Incorrect username or pasword",

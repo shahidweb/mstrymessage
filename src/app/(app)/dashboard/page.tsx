@@ -11,7 +11,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
 import { Loader2, RefreshCcw } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -20,19 +19,19 @@ function page() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSwitchLoading, setIsSwitchLoading] = useState(false);
-  const router = useRouter();
-
-  const handleDeleteMessage = (messageId: string) => {
-    setMessages(messages.filter((item) => item._id !== messageId));
-  };
-
+  const [profileUrl, setProfileUrl] = useState("");
   const { data: session } = useSession();
+
   const form = useForm({
     resolver: zodResolver(acceptMessageSchema),
   });
 
   const { register, watch, setValue } = form;
   const acceptMessage = watch("acceptMessage");
+
+  const handleDeleteMessage = (messageId: string) => {
+    setMessages(messages.filter((item) => item._id !== messageId));
+  };
 
   const fetchAcceptMessage = useCallback(async () => {
     setIsSwitchLoading(true);
@@ -109,12 +108,12 @@ function page() {
     });
   };
 
-  let username = "";
-  if (session?.user) {
-    username = session?.user.username;
-  }
-  const baseUrl = `${window.location.protocol}// ${window.location.host}`;
-  const profileUrl = `${baseUrl}/u/${username}`;
+  useEffect(() => {
+    if (session?.user && typeof window !== "undefined") {
+      const baseUrl = `${window.location.protocol}//${window.location.host}`;
+      setProfileUrl(`${baseUrl}/u/${session.user.username}`);
+    }
+  }, [session]);
 
   return (
     <div
@@ -132,7 +131,9 @@ function page() {
             disabled
             className="input input-bordered w-full p-2 mr-2"
           />
-          <Button className="cursor-pointer" onClick={copyToClipboard}>Copy</Button>
+          <Button className="cursor-pointer" onClick={copyToClipboard}>
+            Copy
+          </Button>
         </div>
       </div>
       <div className="mb-4">
